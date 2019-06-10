@@ -124,6 +124,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+#邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'montaigne0@163.com'
+EMAIL_HOST_PASSWORD = 'dbrcwebsite007'
+
+#注册有效期天数
+CONFIRM_DAYS = 7
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
