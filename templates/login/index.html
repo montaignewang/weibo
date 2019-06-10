@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>主页</title>
+    <title>首页</title>
 </head>
 <body>
-<h1>这仅仅是一个主页模拟！请根据实际情况接入正确的主页！</h1>
+<h1>{{ request.session.user_name }}! 欢迎回来！</h1>
+<p>
+    <a href="/logout/">登出</a>
+</p>
 </body>
 </html>
