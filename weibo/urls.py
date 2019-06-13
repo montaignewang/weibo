@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from login import views
+#from uiweb import views as uiweb_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,7 +24,10 @@ urlpatterns = [
     path('login/', views.login,name='login'),
     path('register/', views.register),
     path('logout/', views.logout),
-    path('captcha/', include('captcha.urls')),
+    path('captcha/', include('captcha.urls')), #验证码
     path('confirm/', views.user_confirm),
+    path('u/', include('uiweb.urls'))
+    #path('u/<str:username>/', uiweb_views.homepage),
+
 
 ]

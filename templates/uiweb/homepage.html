@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微博主页</title>
+</head>
+<body>
+{% csrf_token %}
+{% for weibo in weibos %}
+    <div>
+        <h3> {{ weibo.text }} </h3>
+    </div>
+{% endfor %}
+</body>
+</html>
