@@ -9,8 +9,8 @@ def homepage(request,username):  #个人主页，显示发过的微博
     if not user:
         return redirect('/login/login.html')
     weibos = Weibo.objects.filter(user=user).order_by('-date')
-    context = {'weibos': weibos,}
-    return render(request,'uiweb/homepage.html',locals())
+    context = {'weibos': weibos, 'user': user}
+    return render(request,'uiweb/homepage.html',context)
 
 
 def index(request):
