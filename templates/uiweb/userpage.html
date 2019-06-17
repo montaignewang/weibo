@@ -35,15 +35,7 @@
     </div>
 
     <div class="col-sm-8">
-
-        <form action="/u/" method="post">
-            {% csrf_token %}
-            {{ weibo_form }}
-            <input type="submit" value="发布">
-        </form>
-        <br>
-
-        {% for weibo in f_weibos %}
+        {% for weibo in weibos %}
             <div class="card">
                 <div class="card-header">
                     {{ weibo.user.user.name }}
@@ -58,10 +50,10 @@
         {% endfor %}
     </div>
 
-  </div>
+    </div>
 </div>
 
-
+{% csrf_token %}
 
 
 

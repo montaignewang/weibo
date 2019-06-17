@@ -26,8 +26,6 @@ urlpatterns = [
     path('logout/', views.logout),
     path('captcha/', include('captcha.urls')), #验证码
     path('confirm/', views.user_confirm),
-    path('u/', include('uiweb.urls'))
-    #path('u/<str:username>/', uiweb_views.homepage),
-
+    path('u/', include('uiweb.urls')),
 
 ]
