@@ -23,13 +23,14 @@ def homepage(request):
     user = UserProfile.objects.get(user__name=username)  #获取已登陆的用户名
 
     if request.method == 'POST':
-        weibo_form = WeiboForm(request.POST)
+        weibo_form = WeiboForm(request.POST or None, request.FILES or None)
 
         if weibo_form.is_valid():
             new_weibo = models.Weibo()
             new_weibo.user = user
             new_weibo.wb_type = 0
             new_weibo.text = weibo_form.cleaned_data.get('text')
+            new_weibo.pic = weibo_form.cleaned_data.get('pic')
             new_weibo.perm = 0
             new_weibo.pictures_link_id=''
             new_weibo.video_link_id=''

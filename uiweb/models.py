@@ -13,6 +13,7 @@ class Weibo(models.Model):  #所有微博
     #forward_or_collect_from = models.ForeignKey('self', related_name='forward_or_collects', blank=True, null=True)
     user = models.ForeignKey('UserProfile',on_delete=models.CASCADE)
     text = models.CharField(max_length=140)
+    pic = models.ImageField(upload_to='wb_pic/%Y%m%d',null=True, blank=True)
     pictures_link_id = models.CharField(max_length=128,blank=True,null=True)
     video_link_id = models.CharField(max_length=128,blank=True,null=True)
     perm_choice = (
@@ -58,7 +59,7 @@ class UserProfile(models.Model):  #用户信息
     brief = models.CharField(max_length=140,blank=True,null=True)
     age = models.PositiveSmallIntegerField(blank=True,null=True)
     tags = models.ManyToManyField(Tags)
-    head_img = models.ImageField()
+    head_img = models.ImageField(upload_to="head_img/%Y%m%d/",blank=True)
     follow_list = models.ManyToManyField('self', blank=True, related_name="my_followers", symmetrical=False)
     def __str__(self):
         return self.user.name

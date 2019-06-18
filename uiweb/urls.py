@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     #path('index/',views.index),
     path('<str:username>/',views.userpage,name='userpage'),  #显示用户发过的微博页面
