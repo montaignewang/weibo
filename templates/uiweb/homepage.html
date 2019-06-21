@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
 
+
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.15.0/umd/popper.js"></script>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <title>微博主页</title>
+    <title>仿Weibo</title>
 </head>
-<body style="height:3000px">
+<body style="">
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
   <a class="navbar-brand" href="#">Logo</a>
   <ul class="navbar-nav">
@@ -45,14 +47,16 @@
                 {{ weibo_form.pic }}
             </div>
 
-            <input type="submit" value="发布" style="float:right" >
+            <input type="submit" name="add_weibo" value="发布" style="float:right" >
         </form>
         <br><br>
 
         {% for weibo in f_weibos %}
             <div class="card">
                 <div class="card-header">
-                    {{ weibo.user.user.name }}
+                    <a href = "/u/{{ weibo.user.user.name }}">
+                        {{ weibo.user.user.name }}
+                    </a>
                 </div>
                 <div class="card-body">
                     <h3> {{ weibo.text }} </h3>
@@ -61,9 +65,46 @@
                     {% endif %}
                 </div>
                 <div class="card-footer">
-                    回复/转发/赞/私信
+                    <ul class="list-inline">
+                        <li class="list-inline-item" data-toggle="collapse" data-target="#weibo_id_{{ weibo.id }}">评论</li>
+
+                        <li class="list-inline-item">转发</li>
+                        <li class="list-inline-item">赞</li>
+                        <li class="list-inline-item">私信</li>
+                    </ul>
                 </div>
+
+                <div id="weibo_id_{{ weibo.id }}" class="collapse">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ comment_form.text }}
+                        </div>
+                        <input type="hidden" name="weibo_id" value="{{ weibo.id }}">
+                        <input type="submit" name="add_comment" value="发布评论" style="float:right" >
+                    </form>
+
+                    <div id="comments_div" >
+
+                    {% if weibo.comment_set %}
+                        {% for wc in weibo.comment_set.all|dictsortreversed:"date" %}
+                            <div class="card-header">
+                                <a href = "/u/{{ wc.user.user.name }}">
+                                    {{ weibo.user.user.name }}
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <p>{{ wc.comment }}</p>
+
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                </div>
+
+
             </div>
+            <br>
         {% endfor %}
     </div>
 

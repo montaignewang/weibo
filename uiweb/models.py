@@ -40,12 +40,13 @@ class Category(models.Model):  #微博分类
 
 class Comment(models.Model): #评论
     to_weibo = models.ForeignKey(Weibo,on_delete=models.CASCADE)
+    #weibo_id = models.IntegerField(default=0)
     #p_comment = models.ForeignKey('self',related_name='child_comments')
     user = models.ForeignKey('UserProfile',on_delete=models.CASCADE)
     comment_type_choices = ((0,'comment'),(1,'thumb_up'))
     comment_type = models.IntegerField(choices=comment_type_choices,default=0)
     comment = models.CharField(max_length=140)
-    date = models.DateTimeField(auto_created=True)
+    date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.comment
 
