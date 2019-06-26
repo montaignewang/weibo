@@ -23,10 +23,7 @@ def homepage(request):
     user = UserProfile.objects.get(user__name=username)  #获取已登陆的用户名
 
     if request.method == 'POST' and 'add_weibo' in request.POST:
-
-
         weibo_form = WeiboForm(request.POST or None, request.FILES or None)
-
 
         if weibo_form.is_valid():
             new_weibo = models.Weibo()
@@ -37,12 +34,10 @@ def homepage(request):
             new_weibo.perm = 0
             new_weibo.pictures_link_id=''
             new_weibo.video_link_id=''
-            new_weibo.date = datetime.datetime.now()
             new_weibo.save()
             return redirect('/u/')
     elif request.method  == 'POST' and 'add_comment' in request.POST:
         comment_form = CommentForm(request.POST)
-
 
         if comment_form.is_valid():
             weibo_id = comment_form.cleaned_data.get('weibo_id')
@@ -53,11 +48,29 @@ def homepage(request):
             new_comment.comment = comment_form.cleaned_data.get('text')
             new_comment.save()
             return redirect('/u/')
+    elif request.method == 'POST' and 'add_forward' in request.POST:
+        weibo_form = WeiboForm(request.POST or None, request.FILES or None)
+        if weibo_form.is_valid():
+            forward_weibo_id = weibo_form.cleaned_data.get('forward_weibo_id')
+            forward_weibo = Weibo.objects.get(id=forward_weibo_id)
+
+            new_weibo = models.Weibo()
+            new_weibo.user = user
+            new_weibo.wb_type = 0
+            new_weibo.text = weibo_form.cleaned_data.get('text')
+            new_weibo.pic = weibo_form.cleaned_data.get('pic')
+            new_weibo.forward_or_collect_from = forward_weibo
+            new_weibo.perm = 0
+            new_weibo.pictures_link_id=''
+            new_weibo.video_link_id=''
+            new_weibo.save()
+            return redirect('/u/')
+
+
 
     else:
         weibo_form = WeiboForm()
         comment_form = CommentForm()
-
 
     f_usernames = []
     for u in user.follow_list.all():  #获取用户关注者的姓名列表

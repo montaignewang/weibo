@@ -37,7 +37,7 @@ def index(request):
 
 def login(request):
     if request.session.get('is_login',None):
-        return redirect('/index/')
+        return redirect('/u/')
     if request.method == 'POST':
         login_form = forms.UserForm(request.POST)
         message = '请检查填写的内容！'
@@ -58,7 +58,7 @@ def login(request):
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
-                return redirect('/index/')
+                return redirect('/u/')
             else:
                 message = '密码不正确！'
                 return render(request, 'login/login.html', locals())
@@ -114,7 +114,7 @@ def logout(request):
     if not request.session.get('is_login',None):
         return redirect('/login/')
     request.session.flush()
-    return render(request,'login/index.html')
+    return redirect('/login/')
 
 def user_confirm(request):
     code = request.GET.get('code',None)

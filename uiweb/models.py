@@ -10,7 +10,7 @@ class Weibo(models.Model):  #所有微博
         (2,'collect'),
     )
     wb_type = models.IntegerField(choices=wb_type_choices,default=0)
-    #forward_or_collect_from = models.ForeignKey('self', related_name='forward_or_collects', blank=True, null=True)
+    forward_or_collect_from = models.ForeignKey('self', related_name='forward_or_collects', blank=True, null=True,on_delete=models.CASCADE)
     user = models.ForeignKey('UserProfile',on_delete=models.CASCADE)
     text = models.CharField(max_length=140)
     pic = models.ImageField(upload_to='wb_pic/%Y%m%d',null=True, blank=True)
