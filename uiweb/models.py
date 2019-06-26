@@ -65,3 +65,7 @@ class UserProfile(models.Model):  #用户信息
     def __str__(self):
         return self.user.name
 
+class Zan(models.Model): #点赞信息
+    to_weibo = models.ForeignKey(Weibo,on_delete=models.CASCADE)
+    user = models.ManyToManyField(UserProfile)
+

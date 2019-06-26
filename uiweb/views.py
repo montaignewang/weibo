@@ -65,9 +65,6 @@ def homepage(request):
             new_weibo.video_link_id=''
             new_weibo.save()
             return redirect('/u/')
-
-
-
     else:
         weibo_form = WeiboForm()
         comment_form = CommentForm()

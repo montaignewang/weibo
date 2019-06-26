@@ -95,10 +95,12 @@
 
 
                     <ul class="list-inline">
-                        <li class="list-inline-item" data-toggle="collapse" data-target="#weibo_id_{{ weibo.id }}"><small>评论</small></li>
+                        <li class="list-inline-item" data-toggle="collapse" data-target="#weibo_id_{{ weibo.id }}">
+                            <small>评论{{ weibo.comment_set.all.count }}</small>
+                        </li>
                         <li class="list-inline-item">
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                   data-target="#weibo_id_forward_{{ weibo.id }}">转发</button>
+                            <small data-toggle="modal" data-target="#weibo_id_forward_{{ weibo.id }}">
+                                转发{{ weibo.forward_or_collects.all.count }}</small>
                         </li>
                         <li class="list-inline-item"><small>赞</small></li>
                         <li class="list-inline-item"><small>私信</small></li>
@@ -116,7 +118,12 @@
                             {{ comment_form.text }}
                         </div>
                         <input type="hidden" name="weibo_id" value="{{ weibo.id }}">
-                        <input type="submit" name="add_comment" value="发布评论" style="float:right" >
+                        <div class="list-inline">
+                            <p>(待完善...)
+                            <input type="submit" name="add_comment" value="发布评论" style="float:right" >
+                            </p>
+                        </div>
+
                     </form>
 
                     <div id="comments_div" >
