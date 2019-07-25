@@ -28,9 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'login',
     'captcha',
+    'uiweb',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +57,7 @@ ROOT_URLCONF = 'weibo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + '/templates'],
+        'DIRS': [BASE_DIR + '/templates/',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,3 +141,6 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'staticfiles'),
 )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

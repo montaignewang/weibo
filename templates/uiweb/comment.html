@@ -1,0 +1,19 @@
+{% csrf_token %}
+<div class="card">
+    <div class="card-header">
+        <a href = "/u/{{ weibo.user.user.name }}">
+            {{ weibo.user.user.name }}
+        </a>
+    </div>
+    <div class="card-body">
+        <h3> {{ weibo.text }} </h3>
+        {% if weibo.pic %}
+        <img src="/media/{{ weibo.pic }}" style="width:100%">
+        {% endif %}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ comment_form.text }}
+</div>
+<button type="submit">发布评论</button>
