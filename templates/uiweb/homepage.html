@@ -11,6 +11,12 @@
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <title>仿Weibo</title>
+    <script>
+        $(document).ready(function(){       <!--弹出框-->
+            $('[data-toggle="popover"]').popover();
+
+        });
+    </script>
 </head>
 <body style="">
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
@@ -74,7 +80,9 @@
                 <div class="col-md-11 column ui-sortable">
                     <ul class="list-inline">
                         <li class="list-inline-item">
-                            <a href="/u/{{ weibo.user.user.name }}"><strong>{{ weibo.user.user.name }}</strong></a>
+                            <a href="/u/{{ weibo.user.user.name }}" title="弹出框" data-toggle="popover"
+                               data-trigger="hover" data-content="用户信息"
+                               data-placement="bottom"><strong>{{ weibo.user.user.name }}</strong></a>
                         </li>
                         <li class="list-inline-item"><small>{{ weibo.date }}</small></li>
                     </ul>
@@ -87,10 +95,12 @@
                         <div class="card">
                             <a href="/u/{{ weibo.forward_or_collect_from.user.user.name }}">
                                 @{{ weibo.forward_or_collect_from.user.user.name }}
-                            </a>{{ weibo.forward_or_collect_from.text }}
+                            </a>
+                            <p>{{ weibo.forward_or_collect_from.text }}</p>
+                            {% if weibo.forward_or_collect_from.pic %}
+                                <img src="/media/{{ weibo.forward_or_collect_from.pic }}" style="width:100%" class="rounded" alt="微博图片">
+                            {% endif %}
                         </div>
-
-
                     {% endif %}
 
 
@@ -102,7 +112,22 @@
                             <small data-toggle="modal" data-target="#weibo_id_forward_{{ weibo.id }}">
                                 转发{{ weibo.forward_or_collects.all.count }}</small>
                         </li>
-                        <li class="list-inline-item"><small>赞</small></li>
+                        <li class="list-inline-item">
+
+                            <small id="add_zan_{{ weibo.id }}">赞{{ weibo.zan_set.all.count}}</small>
+                            {% csrf_token %}
+                            <script>
+                                $('#add_zan_{{ weibo.id }}').click(function(){
+                                    var weibo_id = {{ weibo.id }}
+                                    var message = "add_zan"
+                                    var data = {'weibo_id': weibo_id, 'message':message}
+                                    $.post('/u/ajax/add_zan', data, function(ret){
+                                        $('#add_zan_{{ weibo.id }}').text('赞'+ ret.zan_num)
+                                    })
+                                })
+                            </script>
+
+                        </li>
                         <li class="list-inline-item"><small>私信</small></li>
                     </ul>
                 </div>

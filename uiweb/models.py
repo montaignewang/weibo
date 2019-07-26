@@ -49,6 +49,13 @@ class Comment(models.Model): #评论
     def __str__(self):
         return self.comment
 
+#定义点赞关系
+class Zan(models.Model):
+    to_weibo = models.ForeignKey(Weibo, on_delete=models.CASCADE)
+    user = models.ForeignKey('UserProfile',on_delete=models.CASCADE)
+    def __str__(self):
+        return self.to_weibo.text
+
 class Tags(models.Model):  #标签
     name = models.CharField(max_length=64)
     def __str__(self):

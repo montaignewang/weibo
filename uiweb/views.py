@@ -1,7 +1,10 @@
 from django.shortcuts import render,redirect
-from .models import Weibo, Topic, Category, Comment, Tags, UserProfile
+from .models import Weibo, Topic, Category, Comment, Tags, UserProfile, Zan
 from . import models
 from .forms import WeiboForm,CommentForm
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import json
 import datetime
 
 # Create your views here.
@@ -65,6 +68,7 @@ def homepage(request):
             new_weibo.video_link_id=''
             new_weibo.save()
             return redirect('/u/')
+
     else:
         weibo_form = WeiboForm()
         comment_form = CommentForm()
@@ -74,9 +78,33 @@ def homepage(request):
         f_usernames.append(u.user.name)
 
     f_weibos = Weibo.objects.filter(user__user__name__in=f_usernames).order_by('-date')  #获取关注者的微博列表
+    #评论数和点赞数
+
     context={'f_weibos':f_weibos,'user':user,'weibo_form':weibo_form,'comment_form': comment_form,}
 
     return render(request,'uiweb/homepage.html',context=context)
+
+@csrf_exempt
+def add_zan(request):
+    if not request.session.get('is_login',None):  #如果未登陆则转到登陆界面
+        return redirect('/login/')
+    username = request.session['user_name']
+    user = UserProfile.objects.get(user__name=username)  #获取已登陆的用户名
+
+    if request.method == 'POST':
+        weibo_id = request.POST.get('weibo_id')
+        zan_to_weibo = Weibo.objects.get(id=weibo_id)
+        if zan_to_weibo.zan_set.filter(user=user):  #如果已点过赞
+            zan_to_weibo.zan_set.filter(user=user).delete()  #点过赞的则取消
+        else:   #没点过赞，则记录点赞事件
+            new_zan = Zan()
+            new_zan.user = user  # 点赞的是已登陆的用户
+            new_zan.to_weibo = zan_to_weibo
+            new_zan.save()
+        zan_num = Zan.objects.filter(to_weibo=zan_to_weibo).count()
+        return_json = {'zan_num': zan_num}
+        return HttpResponse(json.dumps(return_json), content_type='application/json')
+
 
 '''
 def comment(request, weibo_id):
