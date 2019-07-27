@@ -85,6 +85,25 @@
                                data-placement="bottom"><strong>{{ weibo.user.user.name }}</strong></a>
                         </li>
                         <li class="list-inline-item"><small>{{ weibo.date }}</small></li>
+                        <li class="list-inline-item" style="float:right; display:block;">
+                            <small>
+                            <button type=button id="add_follow_{{ weibo.id }}">
+                                已关注
+                            </button>
+                            </small>
+                            {% csrf_token %}
+                        <script>
+                            $('#add_follow_{{ weibo.id }}').click(function(){
+                                var weibo_id = {{ weibo.id }}
+                                var message = 'add_follow'
+                                var data = {'weibo_id': weibo_id, 'message':message}
+                                $.post('/u/ajax/add_follow', data, function(ret){
+                                    $('#add_follow_{{ weibo.id }}').text(ret.text)
+                                })
+                            })
+                        </script>
+                        </li>
+
                     </ul>
                     <p> {{ weibo.text }} </p>
                     {% if weibo.pic %}

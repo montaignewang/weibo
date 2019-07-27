@@ -84,6 +84,7 @@ def homepage(request):
 
     return render(request,'uiweb/homepage.html',context=context)
 
+#点赞事件处理，ajax
 @csrf_exempt
 def add_zan(request):
     if not request.session.get('is_login',None):  #如果未登陆则转到登陆界面
@@ -104,6 +105,30 @@ def add_zan(request):
         zan_num = Zan.objects.filter(to_weibo=zan_to_weibo).count()
         return_json = {'zan_num': zan_num}
         return HttpResponse(json.dumps(return_json), content_type='application/json')
+
+@csrf_exempt
+def add_follow(request):
+    if not request.session.get('is_login',None):  #如果未登陆则转到登陆界面
+        return redirect('/login/')
+    username = request.session['user_name']
+    user = UserProfile.objects.get(user__name=username)  #获取已登陆的用户名
+
+    if request.method == 'POST':
+        weibo_id = request.POST.get('weibo_id')  # 处理的微博id
+        follow_to_weibo = Weibo.objects.get(id=weibo_id)
+        weibo_user = follow_to_weibo.user
+
+        if weibo_user in user.follow_list.all():
+            user.follow_list.remove(weibo_user)  #如果已关注则取消关注
+            text = '+关注'
+            user.save()
+        else:
+            user.follow_list.add(weibo_user)
+            text = '已关注'
+            user.save()
+        return_json = {'text': text}
+        return HttpResponse(json.dumps(return_json), content_type='application/json')
+
 
 
 '''
